@@ -1,13 +1,18 @@
 
 const express = require('express');
-const app = express();
+
 const bodyParser = require('body-parser');
 
 //! Gestion des routes.
 
 const relaysRoutes = require('./routes/relaysRoutes');
+const gestionAirRoutes = require('./routes/gestionAirRoutes');
 
 //! -------------------------------------------------
+
+const app = express();
+
+
 
 //! Utilisation de cors pour les connexions
 
@@ -53,6 +58,7 @@ app.use(express.json());
 //! Liste des routes.
 
 app.use('/api/relays', relaysRoutes);
+app.use('/api/gestionAir', gestionAirRoutes);
 
 //! --------------------------------------------------
 

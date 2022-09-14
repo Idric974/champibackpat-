@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Accueil.module.css';
 import Date from '../../src/components/Date'
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getTemperatureAir } from '../Redux/Actions/temperatureAir.action';
 
 const Accueil = () => {
+    const dispatch = useDispatch();
 
-
-
+    useEffect(() => {
+        dispatch(getTemperatureAir())
+    }, [])
 
     return (
         <div className={styles.box}>

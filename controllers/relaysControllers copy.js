@@ -3,13 +3,11 @@ const db = require('../models');
 const gestionAirsDataModels = db.gestionAirData;
 const gestionAirModels = db.gestionAir;
 
-//* ➖ ➖ ➖ ➖ ➖ ➖ Gestion Air ➖ ➖ ➖ ➖ ➖ ➖ //
+//* ➖ ➖ ➖ ➖ ➖ ➖ Clic sur le bouton activation eau au sol ➖ ➖ ➖ ➖ ➖ ➖ //
 
-exports.getTemperatureAir = (req, res) => {
+exports.ActivationEauAuSol = (req, res) => {
     console.log('test requete');
 
     res.status(200).json({ message: "Requete OK" });
 
 };
-
-
