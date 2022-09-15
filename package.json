@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "SET NODE_ENV=developement & nodemon server.js",
     "build": "next build",
-    "start": "concurrently -n ' Serveur Back , Cron Tab ' -c ' green' \" nodemon server.js \" \" node /home/pi/Desktop/champiBack_V3/cronTab.js \"   ",
+    "start": "concurrently -n ' Serveur Back , Cron Tab ' -c ' green' \" nodemon server.js \" \" node /home/pi/Desktop/champibackpat-/cronTab.js \"   ",
     "✔️_sandBox": " node /home/pi/Desktop/champiBack_V2/gestion/outils/sandBox.js",
     "✔️_gestionAir": " node /home/pi/Desktop/champiBack_V2/gestion/gestionAir/gestionAir.js",
     "✔️_gestionHum": " node /home/pi/Desktop/champiBack_V2/gestion/gestionHum/gestionHum.js",
@@ -35,11 +35,13 @@
     "react": "18.2.0",
     "react-dayjs": "^0.3.2",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.35.0",
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
-    "sequelize": "^6.21.6"
+    "sequelize": "^6.21.6",
+    "serverless-mysql": "^1.5.4"
   },
   "devDependencies": {
     "eslint": "8.23.0",

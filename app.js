@@ -1,6 +1,5 @@
-
 const express = require('express');
-
+const app = express();
 const bodyParser = require('body-parser');
 
 //! Gestion des routes.
@@ -10,7 +9,7 @@ const gestionAirRoutes = require('./routes/gestionAirRoutes');
 
 //! -------------------------------------------------
 
-const app = express();
+
 
 
 
@@ -58,7 +57,7 @@ app.use(express.json());
 //! Liste des routes.
 
 app.use('/api/relays', relaysRoutes);
-app.use('/api/gestionAir', gestionAirRoutes);
+app.use('/api/gestionAirRoutes', gestionAirRoutes);
 
 //! --------------------------------------------------
 

@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import Layout from '../src/components/Layout';
 import Head from 'next/head';
 import thunk from 'redux-thunk';
@@ -5,6 +6,14 @@ import rootReducer from '../src/Redux/reducers';
 import { Provider } from 'react-redux';
 import { applyMiddleware } from 'redux';
 import { legacy_createStore as createStore } from 'redux';
+
+
+// //! Fonction à jouer au démarrage.
+
+// import { getTemperatureAir } from '../src/Redux/Actions/gestionAir/temperatureAir.action';
+// import { getOjectifPasAir } from '../src/Redux/Actions/gestionAir/consigneObjectifPasAir.action';
+
+// //! --------------------------------------------------
 
 //! Outils de développement Redux.
 
@@ -23,6 +32,13 @@ const store = createStore(
 //! --------------------------------------------------
 
 function MyApp({ Component, pageProps }) {
+
+  // useEffect(() => {
+  //   dispatch(getTemperatureAir())
+  //   dispatch(getOjectifPasAir())
+  // }, []);
+
+
   return (
     <>
       <Provider store={store}>

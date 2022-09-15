@@ -1,15 +1,81 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Accueil.module.css';
 import Date from '../../src/components/Date'
-import { useDispatch } from 'react-redux';
-import { getTemperatureAir } from '../Redux/Actions/temperatureAir.action';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTemperatureAir, postConsigneAir, postObjectifPasAir } from '../Redux/Actions/gestionAir/temperatureAir.action';
+import { getOjectifPasAir } from '../Redux/Actions/gestionAir/consigneObjectifPasAir.action';
+
 
 const Accueil = () => {
     const dispatch = useDispatch();
 
+    //! Appel à lancer au chagement de la page.
+
     useEffect(() => {
         dispatch(getTemperatureAir())
-    }, [])
+        dispatch(getOjectifPasAir())
+
+    }, [dispatch])
+
+    setInterval(() => {
+
+        dispatch(getTemperatureAir())
+        dispatch(getOjectifPasAir())
+
+    }, 60000);
+
+    //! -------------------------------------------------
+
+    //! Recupération des datas dans les store.
+
+    const state = useSelector((state) => state
+    );
+    //console.log('⭐ state ===> ', state);
+
+    const dataTemperatureAir = useSelector((state) => state.temperatureAir
+    );
+    console.log('⭐ TemperatureAir ===> ', dataTemperatureAir);
+
+    const consigneObjectifPasAir = useSelector((state) => state.consigneObjectifPasAir
+    );
+    console.log('⭐ Consigne Objectif Pas ===> ', consigneObjectifPasAir);
+
+
+    //! -------------------------------------------------
+
+    //! Gestion des inputs.
+
+    const [consigneAir, setConsigneAir] = useState(' ');
+    const [objectifAir, setObjectifAir] = useState(' ');
+    const [pasAir, setPasAir] = useState(' ');
+
+    // console.log('consigneAir : ', consigneAir);
+
+    //! -------------------------------------------------
+
+    //! Send data.
+
+    function handleConsigne(e) {
+        e.preventDefault();
+
+        console.log('Clic handleConsigne objectifAir', consigneAir);
+
+        dispatch(postConsigneAir({ data: consigneAir }))
+        dispatch(getOjectifPasAir())
+
+    }
+
+    function handleDescente(e) {
+        e.preventDefault();
+
+        console.log('Clic handleDescente objectifAir', objectifAir);
+        console.log('Clic handleDescente pasAir', pasAir);
+
+        dispatch(postObjectifPasAir({ data: { pasAir, objectifAir } }))
+        dispatch(getOjectifPasAir())
+    }
+
+    //! -------------------------------------------------
 
     return (
         <div className={styles.box}>
@@ -19,38 +85,54 @@ const Accueil = () => {
                 <div className={styles.cardInfosBox}>
                     <div className={styles.cardInfosData}>
                         <div className={styles.cardInfosTitle}>{'Température Air'}</div>
-                        <div className={styles.cardInfosValeur}>{'18'}{' °C'}</div>
-                        <div className={styles.cardInfosConsigne}>{'Consigne : '}{'15'}{' °C'} </div>
-                        <div className={styles.cardInfosDelta}>{'Delta : '}{'3'}{' °C'}</div>
+                        <div className={styles.cardInfosValeur}>{dataTemperatureAir.temperatureAir}{' °C'}</div>
+                        <div className={styles.cardInfosConsigne}>{'Consigne : '}{consigneObjectifPasAir.getConsigne}{' °C'} </div>
+                        <div className={styles.cardInfosDelta}>{'Delta : '}{dataTemperatureAir.deltaAir}{' °C'}</div>
                     </div>
 
                     <div className={styles.cardInfosInput}>
-                        <div className={styles.cardInfosInputContainer}>
-                            <div className={styles.cardInfosInputBox}>
-                                <div className={styles.cardInfosInputValueBoxTitle}>{'Consigne'}</div>
-                                <input className={styles.cardInfosInputValueInput} />
-                                <div className={styles.cardInfosInputValueHisto}>{'10'}{'°C'}</div>
-                            </div>
-                            <div className={styles.cardInfosInputBoxButton}>
-                                <button className={styles.cardInfosInputValueBoxButton}>Valider</button>
-                            </div>
-                        </div>
+                        <form onSubmit={(e) => handleConsigne(e)}>
+                            <div className={styles.cardInfosInputContainer}>
+                                <div className={styles.cardInfosInputBox}>
+                                    <div className={styles.cardInfosInputValueBoxTitle}>{'Consigne'}</div>
 
-                        <div className={styles.cardInfosInputContainer2}>
-                            <div className={styles.cardInfosInputBox}>
-                                <div className={styles.cardInfosInputValueBoxTitle}>{'Objectif'}</div>
-                                <input className={styles.cardInfosInputValueInput} />
-                                <div className={styles.cardInfosInputValueHisto}>{'10'}{'°C'}</div>
+                                    <input className={styles.cardInfosInputValueInput} required type="number"
+                                        onChange={(e) => setConsigneAir(e.target.value)} />
+                                    <div className={styles.cardInfosInputValueHisto}>{consigneObjectifPasAir.getConsigne}{'°C'}</div>
+                                </div>
+                                <div className={styles.cardInfosInputBoxButton}>
+                                    <input
+                                        className={styles.cardInfosInputValueBoxButton}
+                                        type="submit"
+                                        value="Valider "
+                                    />
+
+                                </div>
                             </div>
-                            <div className={styles.cardInfosInputBox}>
-                                <div className={styles.cardInfosInputValueBoxTitle}>{'Pas'}</div>
-                                <input className={styles.cardInfosInputValueInput} />
-                                <div className={styles.cardInfosInputValueHisto}>{'10'}{'°C'}</div>
+                        </form>
+
+                        <form onSubmit={(e) => handleDescente(e)}>
+                            <div className={styles.cardInfosInputContainer2}>
+                                <div className={styles.cardInfosInputBox}>
+                                    <div className={styles.cardInfosInputValueBoxTitle}>{'Objectif'}</div>
+                                    <input className={styles.cardInfosInputValueInput} required type="number"
+                                        onChange={(e) => setObjectifAir(e.target.value)} />
+                                    <div className={styles.cardInfosInputValueHisto}>{consigneObjectifPasAir.getObjectif
+
+                                    }{'°C'}</div>
+                                </div>
+                                <div className={styles.cardInfosInputBox}>
+                                    <div className={styles.cardInfosInputValueBoxTitle}>{'Pas'}</div>
+                                    <input className={styles.cardInfosInputValueInput} required type="number"
+                                        onChange={(e) => setPasAir(e.target.value)} />
+                                    <div className={styles.cardInfosInputValueHisto}>{consigneObjectifPasAir.getPas
+                                    }{'°C'}</div>
+                                </div>
+                                <div className={styles.cardInfosInputBoxButton}>
+                                    <button className={styles.cardInfosInputValueBoxButton}>Valider</button>
+                                </div>
                             </div>
-                            <div className={styles.cardInfosInputBoxButton}>
-                                <button className={styles.cardInfosInputValueBoxButton}>Valider</button>
-                            </div>
-                        </div>
+                        </form>
 
                         <div className={styles.cardInfosDescenteContainer}>
                             <div className={styles.cardInfosDescenteTitle}>{'Gestion descente'}</div>

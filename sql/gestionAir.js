@@ -1,42 +1,43 @@
-const jaune = '\x1b[33m';
+const mysql = require('mysql');
 
+const con = mysql.createConnection({
+    host: 'localhost',
+    user: 'idric',
+    password: 'Kup33uC4W6',
+    database: 'champyresi',
+});
 
-//? Récupération de l'état de la vanne froid.
-
+let table = 'gestion_airs';
 let temperatureAir;
 let deltaAir;
-let consigne;
-
-
-let recuperationEtatVanneFroid = () => {
-
-
-    try {
-        console.log('Salut');
-
-        return {
-            temperatureAir: 10,
-            deltaAir: 5,
-            consigne: 1,
-
-
-        }
 
 
 
+let getTemperatureAir = () => {
+    con.connect(function (err) {
+        if (err) throw err;
+        console.log('Connecté à la base de données MySQL!');
+        //
 
+        //* gestion Air
 
-    } catch (error) {
+        con.query(
+            'SELECT * FROM ' + table + ' WHERE id=(SELECT max(id) FROM ' + table + ')',
+            function (err, result) {
+                if (err) throw err;
 
-        console.log("❌ %c ERREUR ==> gestions Air ==> Récupération de l'état de la vanne froid",
-            'color: orange', error);
+                temperatureAir = result[0]["temperatureAir"]
+                console.log("temperatureAir : ", temperatureAir);
 
+                deltaAir = result[0]["deltaAir"]
 
-    }
+                console.log("deltaAir : ", deltaAir);
+            }
+        );
+    });
 
 
 }
 
-module.exports = { recuperationEtatVanneFroid };
+getTemperatureAir();
 
-//? --------------------------------------------------

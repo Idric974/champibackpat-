@@ -6,10 +6,23 @@ const gestionAirModels = db.gestionAir;
 //* ➖ ➖ ➖ ➖ ➖ ➖ Gestion Air ➖ ➖ ➖ ➖ ➖ ➖ //
 
 exports.getTemperatureAir = (req, res) => {
-    console.log('test requete');
+    gestionAirModels
+        .findOne({
+            attributes: [[Sequelize.fn('max', Sequelize.col('id')), 'maxid']],
+            raw: true,
+        })
+        .then((id) => {
+            // console.log('Le dernier id de gestionAir est : ', id);
+            // console.log(id.maxid);
 
-    res.status(200).json({ message: "Requete OK" });
-
+            gestionAirModels
+                .findOne({
+                    where: { id: id.maxid },
+                })
+                .then((temperatureAir) => {
+                    res.status(200).json({ temperatureAir });
+                });
+        });
 };
 
 

@@ -1,9 +1,13 @@
-const router = require('express').Router();
+const express = require('express');
+const router = express.Router();
 const gestionAirControllers = require('../controllers/gestionAirControllers');
 
 //! POST
 
-router.get('/getTemperatureAir', gestionAirControllers.getTemperatureAir);
+const affichageTemperatureAir = require('../controllers/gestionAirControllers');
+router.get('/getTemperatureAir', affichageTemperatureAir.getTemperatureAir);
+
+
 
 //! -------------------------------------------------
 
